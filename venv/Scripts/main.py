@@ -27,14 +27,38 @@ class DCMotor:
         plt.plot(t, y)
         plt.show()
 
+    def test_noise(self):
+        sim_length = 1000
+
+        sig_val = 1
+        sig = []
+        for s in range(sim_length):
+            sig.append(sig_val)
+
+        input_noise = np.random.normal(0, 0.05, sim_length)
+        input_signal = sig + input_noise
+
+        time = []
+        for time_sample in range(sim_length):
+            time.append(time_sample)
+
+        t, y, x = signal.lsim(self.transfer_function, input_signal, time)
+        output_noise = np.random.normal(0, 0.01, sim_length)
+
+        plt.plot(t, y)
+        output = y + output_noise
+        #plt.plot(t, output)
+        plt.show()
+
 
 def __main__():
     print("Hello World!")
     motor = DCMotor(voltage=1, resistance=0.5, inductance=0.01, inertia=0.1,
                     friction=0.01, torque=0.01, electromotive_force=0.01)
-    motor.plot_step_response()
-    print("Test pusha github xDD")
+    motor.test_noise()
 
 
 if __name__ == "__main__":
     __main__()
+
+
